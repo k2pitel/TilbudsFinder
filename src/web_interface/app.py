@@ -12,8 +12,16 @@ def create_app():
                 static_folder='static')
     
     # Configuration
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///tilbudsfinder.db')
+    secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+    if secret_key == 'dev-secret-key-change-in-production':
+        import sys
+        print("WARNING: Using default SECRET_KEY. Set SECRET_KEY environment variable in production!", file=sys.stderr)
+    app.config['SECRET_KEY'] = secret_key
+    
+    # Use absolute path for database - place it in the project root
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    db_path = os.path.join(project_root, 'tilbudsfinder.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f'sqlite:///{db_path}')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     # Initialize database
@@ -157,4 +165,7 @@ def process_pdf():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Debug mode should only be enabled in development
+    # Set FLASK_DEBUG=1 environment variable to enable debug mode
+    debug_mode = os.environ.get('FLASK_DEBUG', '0') == '1'
+    app.run(debug=debug_mode, host='0.0.0.0', port=5000)

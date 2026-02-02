@@ -4,19 +4,30 @@ import sys
 import os
 from datetime import datetime, timedelta
 
-# Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+# Add parent directory to path
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, parent_dir)
 
-from database import db, Market, Offer, init_db
-from web_interface.app import create_app
+# Change to the script's directory
+os.chdir(parent_dir)
+
+# Now we can import from src
+from src.web_interface.app import app
+from src.database import db, Market, Offer
 
 
 def add_sample_data():
     """Add sample offer data to the database."""
-    app = create_app()
-    
     with app.app_context():
         print("Adding sample data to database...")
+        
+        # Ensure all markets exist first
+        for market_name in ['Bilka', 'Rema 1000', 'Netto', 'Føtex', 'Lidl']:
+            if not Market.query.filter_by(name=market_name).first():
+                print(f"Creating market: {market_name}")
+                market = Market(name=market_name)
+                db.session.add(market)
+        db.session.commit()
         
         # Sample offers for different markets
         sample_offers = [

@@ -2,7 +2,7 @@
 
 import re
 from datetime import datetime
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Any
 from dateutil import parser as date_parser
 
 
@@ -32,7 +32,7 @@ class OfferExtractor:
         """Initialize the offer extractor."""
         pass
     
-    def extract_prices(self, text: str) -> List[Dict[str, any]]:
+    def extract_prices(self, text: str) -> List[Dict[str, Any]]:
         """
         Extract price patterns from text.
         
@@ -68,7 +68,7 @@ class OfferExtractor:
         
         return prices
     
-    def extract_units(self, text: str) -> List[Dict[str, any]]:
+    def extract_units(self, text: str) -> List[Dict[str, Any]]:
         """
         Extract unit patterns from text.
         
@@ -125,12 +125,13 @@ class OfferExtractor:
                     date_str = match.group(0)
                     parsed_date = date_parser.parse(date_str, dayfirst=True, fuzzy=True)
                     dates.append(parsed_date)
-                except:
+                except (ValueError, date_parser.ParserError):
+                    # Skip dates that cannot be parsed
                     pass
         
         return dates
     
-    def extract_offers_from_text(self, text: str, market_name: str) -> List[Dict[str, any]]:
+    def extract_offers_from_text(self, text: str, market_name: str) -> List[Dict[str, Any]]:
         """
         Extract complete offer information from text.
         
@@ -200,7 +201,7 @@ class OfferExtractor:
         return offers
 
 
-def extract_offers(text: str, market_name: str) -> List[Dict[str, any]]:
+def extract_offers(text: str, market_name: str) -> List[Dict[str, Any]]:
     """
     Convenience function to extract offers from text.
     
