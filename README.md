@@ -65,6 +65,14 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+4. (Optional) Configure environment variables:
+```bash
+# Create a .env file for production settings
+echo "SECRET_KEY=your-secure-random-key-here" > .env
+echo "FLASK_DEBUG=0" >> .env
+echo "DATABASE_URL=sqlite:///tilbudsfinder.db" >> .env
+```
+
 ## Usage
 
 ### 1. Processing PDF Files
@@ -87,6 +95,11 @@ Start the web server:
 
 ```bash
 python run.py
+```
+
+For development with debug mode enabled:
+```bash
+FLASK_DEBUG=1 python run.py
 ```
 
 Then open your browser and navigate to:
@@ -161,6 +174,14 @@ Processes a PDF file and extracts offers.
 - **Styling**: Custom CSS with responsive design
 
 ## Development
+
+### Environment Variables
+
+The application supports the following environment variables:
+
+- `SECRET_KEY` - Secret key for Flask sessions (required in production)
+- `FLASK_DEBUG` - Set to `1` to enable debug mode (default: `0`)
+- `DATABASE_URL` - Database connection string (default: `sqlite:///tilbudsfinder.db`)
 
 ### Running Tests
 
