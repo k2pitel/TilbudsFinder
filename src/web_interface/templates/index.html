@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TilbudsFinder - Find de bedste tilbud</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🛒 TilbudsFinder</h1>
+            <p class="subtitle">Find og sammenlign tilbud fra danske supermarkeder</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Search and Filter Section -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Søg efter produkter...">
+                <button id="searchBtn">Søg</button>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="marketFilter">Supermarked:</label>
+                    <select id="marketFilter">
+                        <option value="">Alle markeder</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sortOrder">Sorter:</label>
+                    <select id="sortOrder">
+                        <option value="price_asc">Pris (lav til høj)</option>
+                        <option value="price_desc">Pris (høj til lav)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <div id="resultsInfo" class="results-info"></div>
+            <div id="offersContainer" class="offers-grid">
+                <!-- Offers will be loaded here dynamically -->
+            </div>
+            <div id="pagination" class="pagination"></div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading" style="display: none;">
+            <p>Indlæser tilbud...</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 TilbudsFinder - Bachelor Project</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
